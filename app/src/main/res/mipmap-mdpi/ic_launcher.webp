@@ -1,0 +1,37 @@
+package com.example.hotspotf3.ui.profile
+
+import android.app.Activity
+import android.content.Intent
+import android.os.Bundle
+import android.view.*
+import android.widget.ImageView
+import android.widget.PopupMenu
+import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import com.example.hotspotf3.LoginActivity
+import com.example.hotspotf3.R
+import com.example.hotspotf3.ViewActivity
+import com.example.hotspotf3.databinding.FragmentProfileBinding
+import com.google.firebase.auth.FirebaseAuth
+
+
+class ProfileFragment : Fragment() {
+
+    private lateinit var profileViewModel: ProfileViewModel
+    private var _binding: FragmentProfileBinding? = null
+
+
+    var modalList = ArrayList<Modal>()
+    var names = arrayOf(
+        "img1",
+        "img2",
+        "img3",
+        "img4"
+    )
+
+    var images = intArrayOf(
+        R.drawable.sample_img1,
+        R.drawable.sample_img2,
+        R.drawable.sample_img3,
+        R.drawable.sample_img4
