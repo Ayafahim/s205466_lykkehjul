@@ -8,19 +8,18 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.s205466_lykkehjul.R
 
-class RVAdapter (val context: Context, val list : List<String>) :
+class RVAdapter(val context: Context, val list: ArrayList<String>) :
     RecyclerView.Adapter<RVAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val itemTitle: TextView = itemView.findViewById(R.id.gameWord)
+        val itemTitle: TextView = itemView.findViewById(R.id.wheelPoints)
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.item2_layout, parent, false)
         return ViewHolder(v)
     }
-
 
 
 

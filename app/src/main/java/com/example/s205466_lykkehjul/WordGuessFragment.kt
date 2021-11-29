@@ -1,30 +1,28 @@
 package com.example.s205466_lykkehjul
 
 import android.os.Bundle
-import android.text.TextUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.s205466_lykkehjul.adapter.RVAdapter
+import com.example.s205466_lykkehjul.data.WheelValues
 import com.example.s205466_lykkehjul.data.Words
-import java.lang.StringBuilder
 import kotlin.random.Random
 
 
 class WordGuessFragment : Fragment() {
     var recyclerView: RecyclerView? = null
-    var underScoreWord = " "
-    var myPoints = 0
-    var wheelPoints = 0
-    var countries = Words.countries
-    val randomIndex = Random.nextInt(countries.size)
+    private var underScoreWord = " "
+    private var myPoints = 0
+    private var wheelPoints = "hej"
+    private var wheel = WheelValues.spinWheel
+    private var countries = Words.countries
+    private val randomIndex = Random.nextInt(countries.size)
     private val randomWord = countries[randomIndex]
     var wordSoFar: String? = null
     var newUnderScoreWord: String? = null
@@ -35,70 +33,81 @@ class WordGuessFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_word_guess, container, false)
+        wheel.add("0")
 
         recyclerView = view?.findViewById(R.id.RV)
         recyclerView?.layoutManager = LinearLayoutManager(context)
-        recyclerView?.adapter = context?.let { RVAdapter(it, getWordsList()) }
+        recyclerView?.adapter = context?.let { RVAdapter(it, wheel) }
+
 
         val guessedLetter = view.findViewById<EditText>(R.id.letterInput)
         val guessBtn = view.findViewById<Button>(R.id.guessBtn)
+        val spinBtn = view.findViewById<Button>(R.id.spinBtn)
 
+//        guessBtn.setOnClickListener {
+//            if(TextUtils.isEmpty(guessedLetter.text.toString())){
+//                Toast.makeText(activity, "Input letter", Toast.LENGTH_SHORT).show()
+//            }
+//            else(
+//
+//            )
+//        }
 
-
-        guessBtn.setOnClickListener {
-            if (TextUtils.isEmpty(guessedLetter.text.toString())) {
-                Toast.makeText(activity, "Input a letter", Toast.LENGTH_SHORT).show()
-            } else {
-                if(randomWord.contains(guessedLetter.text.toString()))
-                revealLetter(guessedLetter.text.toString()[0])
-                guessedLetter.setText("")
-
-//                    recyclerView?.adapter = context?.let { RVAdapter(it,revealLetter(guessedLetter.text.toString()[0]) ) }
-
-
-            }
+        spinBtn.setOnClickListener {
+            spinWheel()
         }
-
         return view
     }
 
-
-    private fun revealLetter(letter: Char): ArrayList<String> {
-        val charArray = getWordsList()[0].toCharArray()
-        var indexOfLetter = randomWord.indexOf(letter)
-
-        while (indexOfLetter >= 0){
-            charArray[indexOfLetter] = randomWord[indexOfLetter]
-            indexOfLetter = randomWord.indexOf(letter,indexOfLetter + 1)
-        }
-         newUnderScoreWord = String(charArray)
-
-        val list = ArrayList<String>()
-//        list.add(getWordsList()[0].replace(underScoreWord,newUnderScoreWord))
-        list.add(newUnderScoreWord!!)
-        recyclerView?.adapter = context?.let { RVAdapter(it,list ) }
-
-        return list
+    private fun  initializeWheelPoints(): ArrayList<String>{
+        val values = ArrayList<String>()
+        values.add("1200")
+        values.add("200")
+        values.add("500")
+        values.add("1600")
+        values.add("100")
+        return values
     }
 
-    private fun getWordsList(): ArrayList<String> {
-        val sb = StringBuilder()
+    private fun spinWheel(){
+        var list = initializeWheelPoints()
+        var randomIndex = Random.nextInt(list.size)
+        wheelPoints = list[randomIndex]
+        wheel[0]= wheelPoints
+        recyclerView?.adapter?.notifyItemChanged(0)
 
-        randomWord.forEach {
-            sb.append("_")
-        }
-        underScoreWord = sb.toString()
-
-        val list = ArrayList<String>()
-        list.add(underScoreWord)
-        return list
-    }
-
-    fun saveWordSoFar(word: String): String{
-
-         wordSoFar = word
-
-        return wordSoFar as String
 
     }
+
+//    private fun revealLetter(letter: Char): ArrayList<String> {
+//        val charArray = getWordsList()[0].toCharArray()
+//        var indexOfLetter = randomWord.indexOf(letter)
+//
+//        while (indexOfLetter >= 0){
+//            charArray[indexOfLetter] = randomWord[indexOfLetter]
+//            indexOfLetter = randomWord.indexOf(letter,indexOfLetter + 1)
+//        }
+//         newUnderScoreWord = String(charArray)
+//
+//        val list = ArrayList<String>()
+////        list.add(getWordsList()[0].replace(underScoreWord,newUnderScoreWord))
+//        list.add(newUnderScoreWord!!)
+//        recyclerView?.adapter = context?.let { RVAdapter(it,list ) }
+//
+//        return list
+//    }
+
+//    private fun getWordsList(): ArrayList<String> {
+//        val sb = StringBuilder()
+//
+//        randomWord.forEach {
+//            sb.append("_")
+//        }
+//        underScoreWord = sb.toString()
+//
+//        val list = ArrayList<String>()
+//        list.add(underScoreWord)
+//        return list
+//    }
+
 }
