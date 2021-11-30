@@ -1,12 +1,15 @@
 package com.example.s205466_lykkehjul
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.s205466_lykkehjul.adapter.RVAdapter
@@ -16,16 +19,23 @@ import kotlin.random.Random
 
 
 class WordGuessFragment : Fragment() {
-    var recyclerView: RecyclerView? = null
-    private var underScoreWord = " "
+    private var recyclerView: RecyclerView? = null
     private var myPoints = 0
-    private var wheelPoints = "hej"
+    private var myLives = 5
+    private var letterOccurance = 0
+    private var lifeCounter: TextView? = null
+    private var pointsView: TextView? = null
+    private var wheelPoints = " "
     private var wheel = WheelValues.spinWheel
     private var countries = Words.countries
+    private var guessedLetter = " "
     private val randomIndex = Random.nextInt(countries.size)
-    private val randomWord = countries[randomIndex]
-    var wordSoFar: String? = null
-    var newUnderScoreWord: String? = null
+    private var randomWord = countries[randomIndex]
+    private var underScoreWord = " "
+    private var gameWordView: TextView? = null
+    private var isSpinning = false
+    private val sb = StringBuilder()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,74 +50,207 @@ class WordGuessFragment : Fragment() {
         recyclerView?.adapter = context?.let { RVAdapter(it, wheel) }
 
 
-        val guessedLetter = view.findViewById<EditText>(R.id.letterInput)
+        val letterInput = view.findViewById<EditText>(R.id.letterInput)
         val guessBtn = view.findViewById<Button>(R.id.guessBtn)
         val spinBtn = view.findViewById<Button>(R.id.spinBtn)
+        lifeCounter = view.findViewById(R.id.lifeCounter)
+        pointsView = view.findViewById(R.id.pointsView)
+        gameWordView = view.findViewById(R.id.gameWord)
 
-//        guessBtn.setOnClickListener {
-//            if(TextUtils.isEmpty(guessedLetter.text.toString())){
-//                Toast.makeText(activity, "Input letter", Toast.LENGTH_SHORT).show()
-//            }
-//            else(
-//
-//            )
-//        }
+
+        newGame()
+
+        guessBtn.setOnClickListener {
+            if (!isSpinning) {
+                Toast.makeText(activity, "Please spin wheel first.", Toast.LENGTH_SHORT).show()
+            } else {
+                if (TextUtils.isEmpty(letterInput.text.toString())) {
+                    Toast.makeText(activity, "Input letter", Toast.LENGTH_SHORT).show()
+                } else {
+                    guessedLetter = letterInput.text.toString().lowercase()
+                    letterInput.text = null
+                    checkLetter()
+                    isSpinning = false
+                }
+            }
+        }
 
         spinBtn.setOnClickListener {
-            spinWheel()
+            if (isSpinning) {
+                Toast.makeText(
+                    activity,
+                    "You have already spun the wheel, make a guess",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                spinWheel()
+            }
+
         }
         return view
     }
 
-    private fun  initializeWheelPoints(): ArrayList<String>{
+    private fun initializeWheelPoints(): ArrayList<String> {
         val values = ArrayList<String>()
-        values.add("1200")
-        values.add("200")
-        values.add("500")
-        values.add("1600")
-        values.add("100")
+//        values.add("1200")
+//        values.add("200")
+//        values.add("500")
+//        values.add("1600")
+//        values.add("100")
+        values.add("Lost Turn")
+//        values.add("Bankrupt")
+//        values.add("Extra Turn")
         return values
     }
 
-    private fun spinWheel(){
+    private fun spinWheel() {
         var list = initializeWheelPoints()
         var randomIndex = Random.nextInt(list.size)
         wheelPoints = list[randomIndex]
-        wheel[0]= wheelPoints
+        wheel[0] = wheelPoints
         recyclerView?.adapter?.notifyItemChanged(0)
 
+        if (wheelPoints == "Bankrupt" || wheelPoints == "Extra Turn" || wheelPoints == "Lost Turn") {
+            specialFields()
+          isSpinning = false
+        }
+        else {
+            isSpinning = true
+        }
 
     }
 
-//    private fun revealLetter(letter: Char): ArrayList<String> {
-//        val charArray = getWordsList()[0].toCharArray()
-//        var indexOfLetter = randomWord.indexOf(letter)
-//
-//        while (indexOfLetter >= 0){
-//            charArray[indexOfLetter] = randomWord[indexOfLetter]
-//            indexOfLetter = randomWord.indexOf(letter,indexOfLetter + 1)
-//        }
-//         newUnderScoreWord = String(charArray)
-//
-//        val list = ArrayList<String>()
-////        list.add(getWordsList()[0].replace(underScoreWord,newUnderScoreWord))
-//        list.add(newUnderScoreWord!!)
-//        recyclerView?.adapter = context?.let { RVAdapter(it,list ) }
-//
-//        return list
-//    }
+    private fun newGame() {
 
-//    private fun getWordsList(): ArrayList<String> {
-//        val sb = StringBuilder()
-//
-//        randomWord.forEach {
-//            sb.append("_")
-//        }
-//        underScoreWord = sb.toString()
-//
-//        val list = ArrayList<String>()
-//        list.add(underScoreWord)
-//        return list
-//    }
+        lifeCounter?.text = myLives.toString()
+        pointsView?.text = "Points: 0"
+        repeat(randomWord.length) {
+            sb.append("_")
+            underScoreWord = sb.toString()
+        }
+        gameWordView?.text = underScoreWord
+    }
+
+    private fun checkLetter() {
+        if (randomWord.contains(guessedLetter)) {
+            Toast.makeText(activity, "You guessed right", Toast.LENGTH_SHORT).show()
+            revealLetter()
+            calculatePoints()
+        } else {
+            Toast.makeText(activity, "You guessed wrong, you lose a life", Toast.LENGTH_SHORT)
+                .show()
+            myLives--
+            lifeCounter?.text = myLives.toString()
+        }
+    }
+
+
+    private fun calculatePoints() {
+
+        if (wheelPoints == "Bankrupt" || wheelPoints == "Extra Turn" || wheelPoints == "Lost Turn") {
+            specialFields()
+        } else {
+
+            when (letterOccurance) {
+                1 -> {
+                    myPoints += wheelPoints.toInt()
+                    pointsView!!.text = "Points: $myPoints"
+                }
+                2 -> {
+
+                    myPoints += (wheelPoints.toInt() * 2)
+                    pointsView!!.text = "Points: $myPoints"
+                }
+                3 -> {
+                    myPoints += (wheelPoints.toInt() * 3)
+                    pointsView!!.text = "Points: $myPoints"
+                }
+
+            }
+        }
+    }
+
+
+    private fun specialFields() {
+        when (wheelPoints) {
+            "Extra Turn" -> {
+                myLives++
+                lifeCounter!!.text = myLives.toString()
+            }
+            "Lost Turn" -> {
+                myLives--
+                lifeCounter!!.text = myLives.toString()
+            }
+            "Bankrupt" -> {
+                myPoints = 0
+                pointsView!!.text = "Points: $myPoints"
+            }
+
+        }
+    }
+
+
+    private fun revealLetter() {
+        val index = randomWord.indexesOf(guessedLetter, true)
+
+        when (index.size) {
+            1 -> {
+                letterOccurance = 1
+                underScoreWord = underScoreWord.replaceRange(
+                    index[0],
+                    index[0] + 1,
+                    guessedLetter
+                )
+                gameWordView?.text = underScoreWord
+            }
+
+            2 -> {
+                letterOccurance = 2
+                underScoreWord = underScoreWord.replaceRange(
+                    index[0],
+                    index[0] + 1,
+                    guessedLetter
+                )
+                underScoreWord = underScoreWord.replaceRange(
+                    index[1],
+                    index[1] + 1,
+                    guessedLetter
+                )
+                gameWordView?.text = underScoreWord
+            }
+            3 -> {
+                letterOccurance = 3
+                underScoreWord = underScoreWord.replaceRange(
+                    index[0],
+                    index[0] + 1,
+                    guessedLetter
+                )
+                underScoreWord = underScoreWord.replaceRange(
+                    index[1],
+                    index[1] + 1,
+                    guessedLetter
+                )
+                underScoreWord = underScoreWord.replaceRange(
+                    index[2],
+                    index[2] + 1,
+                    guessedLetter
+                )
+                gameWordView?.text = underScoreWord
+
+            }
+        }
+    }
+
+    /**
+     * Funktionen kan finde indexes af substring i et string.
+     * taget fra stackoverflow
+     * link: https://stackoverflow.com/questions/62189457/get-indexes-of-substrings-contained-in-a-string-in-kotlin-way
+     */
+    private fun String?.indexesOf(substr: String, ignoreCase: Boolean = true): List<Int> {
+        return this?.let {
+            val regex = if (ignoreCase) Regex(substr, RegexOption.IGNORE_CASE) else Regex(substr)
+            regex.findAll(this).map { it.range.start }.toList()
+        } ?: emptyList()
+    }
 
 }

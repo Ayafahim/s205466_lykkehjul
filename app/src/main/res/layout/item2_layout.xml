@@ -8,18 +8,18 @@
     android:foreground = "@drawable/item_background" >
 
     <RelativeLayout
-        android:layout_width="100dp"
+        android:layout_width="200dp"
         android:layout_height="50dp"
         android:padding = "5dp">
 
 
         <TextView
             android:id="@+id/wheelPoints"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="195dp"
+            android:layout_height="45dp"
             android:text="2500"
+            android:textAlignment="center"
             android:textColor="@color/black"
-            android:textAlignment = "center"
             android:textSize="30sp"
 
             tools:ignore="HardcodedText" />

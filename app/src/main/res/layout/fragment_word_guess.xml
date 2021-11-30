@@ -7,130 +7,126 @@
     tools:context=".WordGuessFragment">
 
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginStart="9dp"
-        android:layout_marginTop="49dp"
-        android:layout_marginEnd="9dp"
-        android:foreground="@drawable/item_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lifeCounter">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:layout_margin="10dp"
-            android:padding="20dp"
-            tools:layout_editor_absoluteX="14dp"
-            tools:layout_editor_absoluteY="111dp">
-
-
-            <TextView
-                android:id="@+id/gameWord"
-                android:layout_width="wrap_content"
-                android:layout_height="55dp"
-                android:text="_ _ _ _ _ _ A_ _B_ _ _C_ _"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textSize="30dp" />
-        </RelativeLayout>
-
-
-    </androidx.cardview.widget.CardView>
-
     <TextView
         android:id="@+id/lifeCounter"
         android:layout_width="0dp"
         android:layout_height="57dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
         android:padding="10dp"
+        android:textStyle="bold"
         android:text="5"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="30dp"
+        android:textSize="25dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/letterInput"
-        android:layout_width="196dp"
-        android:layout_height="62dp"
+        android:layout_width="198dp"
+        android:layout_height="63dp"
         android:layout_marginStart="101dp"
-        android:layout_marginTop="111dp"
+        android:layout_marginTop="97dp"
         android:layout_marginEnd="101dp"
-        android:layout_marginBottom="111dp"
+        android:layout_marginBottom="109dp"
         android:ems="10"
         android:hint="Please input a letter"
         android:inputType="none|textCapCharacters"
-        app:layout_constraintBottom_toTopOf="@+id/spinBtn"
+        app:layout_constraintBottom_toTopOf="@+id/guessBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/RV" />
 
     <Button
         android:id="@+id/spinBtn"
         android:layout_width="153dp"
         android:layout_height="66dp"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="264dp"
         android:layout_marginEnd="235dp"
-        android:layout_marginBottom="188dp"
+        android:layout_marginBottom="116dp"
         android:text="Spin Wheel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.444"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintHorizontal_bias="0.481"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/guessBtn"
         android:layout_width="153dp"
         android:layout_height="66dp"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="264dp"
         android:layout_marginEnd="50dp"
-        android:layout_marginBottom="188dp"
+        android:layout_marginBottom="116dp"
         android:text="Guess"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toEndOf="@+id/spinBtn" />
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="139dp"
-        android:layout_height="41dp"
+        android:id="@+id/pointsView"
+        android:layout_width="204dp"
+        android:layout_height="53dp"
         android:layout_marginStart="201dp"
-        android:layout_marginTop="27dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="25dp"
-        android:layout_marginBottom="36dp"
-        android:text="Points: 100"
+        android:text="Points: 3500"
         android:textAlignment="center"
-        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:textSize="25dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.661"
         app:layout_constraintStart_toEndOf="@+id/lifeCounter"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RV"
-        android:layout_width="142dp"
-        android:layout_height="95dp"
-        android:layout_marginTop="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/letterInput"
+        android:layout_width="wrap_content"
+        android:layout_height="79dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView"
-        app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/item2_layout" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="386dp"
+        android:layout_height="109dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="13dp"
+        android:foreground="@drawable/item_background"
+        app:layout_constraintBottom_toTopOf="@+id/RV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lifeCounter">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/gameWord"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_centerInParent="true"
+                android:letterSpacing="0.2"
+                android:text="_ _ _ _ _ _ A_ _B_ _ "
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="30dp" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
