@@ -5,10 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".WonFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id = "@+id/text"
+        android:layout_width="222dp"
+        android:layout_height="673dp"
         android:text="You Won" />
 
 </FrameLayout>
