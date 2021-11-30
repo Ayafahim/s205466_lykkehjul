@@ -2,15 +2,15 @@ package com.example.s205466_lykkehjul.data
 
 object Words {
     val  countries = listOf<String>(
-        "argentina",
-        "denmark",
-        "japan",
-        "korea",
-        "england",
-        "iraq",
-        "sweden",
-        "afghanistan",
-        "pakistan",
+//        "argentina",
+//        "denmark",
+//        "japan",
+//        "korea",
+//        "england",
+//        "iraq",
+//        "sweden",
+//        "afghanistan",
+//        "pakistan",
         "usa"
     )
 }

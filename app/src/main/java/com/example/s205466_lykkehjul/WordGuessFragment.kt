@@ -1,5 +1,6 @@
 package com.example.s205466_lykkehjul
 
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -9,7 +10,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.s205466_lykkehjul.adapter.RVAdapter
@@ -35,8 +38,13 @@ class WordGuessFragment : Fragment() {
     private var gameWordView: TextView? = null
     private var isSpinning = false
     private val sb = StringBuilder()
+    private var hasWon = false
+    private var isTyped = false
+    private var hasLost = false
+    var letters = ArrayList<String>()
 
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,6 +68,7 @@ class WordGuessFragment : Fragment() {
 
         newGame()
 
+
         guessBtn.setOnClickListener {
             if (!isSpinning) {
                 Toast.makeText(activity, "Please spin wheel first.", Toast.LENGTH_SHORT).show()
@@ -69,8 +78,13 @@ class WordGuessFragment : Fragment() {
                 } else {
                     guessedLetter = letterInput.text.toString().lowercase()
                     letterInput.text = null
+//                    checkLettersTyped()
                     checkLetter()
+//                    lettersTyped()
                     isSpinning = false
+                    checkGameState()
+                    navToFragment()
+                    letters.add(guessedLetter)
                 }
             }
         }
@@ -85,21 +99,23 @@ class WordGuessFragment : Fragment() {
             } else {
                 spinWheel()
             }
-
         }
+
+
+
         return view
     }
 
     private fun initializeWheelPoints(): ArrayList<String> {
         val values = ArrayList<String>()
-//        values.add("1200")
-//        values.add("200")
-//        values.add("500")
-//        values.add("1600")
-//        values.add("100")
+        values.add("1200")
+        values.add("200")
+        values.add("500")
+        values.add("1600")
+        values.add("100")
         values.add("Lost Turn")
-//        values.add("Bankrupt")
-//        values.add("Extra Turn")
+        values.add("Bankrupt")
+        values.add("Extra Turn")
         return values
     }
 
@@ -112,9 +128,8 @@ class WordGuessFragment : Fragment() {
 
         if (wheelPoints == "Bankrupt" || wheelPoints == "Extra Turn" || wheelPoints == "Lost Turn") {
             specialFields()
-          isSpinning = false
-        }
-        else {
+            isSpinning = false
+        } else {
             isSpinning = true
         }
 
@@ -132,11 +147,18 @@ class WordGuessFragment : Fragment() {
     }
 
     private fun checkLetter() {
+
         if (randomWord.contains(guessedLetter)) {
-            Toast.makeText(activity, "You guessed right", Toast.LENGTH_SHORT).show()
-            revealLetter()
-            calculatePoints()
-        } else {
+            if (guessedLetter in letters) {
+                Toast.makeText(activity, "you have already typed this  letter", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                Toast.makeText(activity, "You guessed right", Toast.LENGTH_SHORT).show()
+                revealLetter()
+                calculatePoints()
+            }
+        }
+        else{
             Toast.makeText(activity, "You guessed wrong, you lose a life", Toast.LENGTH_SHORT)
                 .show()
             myLives--
@@ -240,6 +262,39 @@ class WordGuessFragment : Fragment() {
             }
         }
     }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun checkGameState() {
+        matchWord(gameWordView!!.text.toString())
+        if (myLives == 0) {
+            hasLost = true
+            Toast.makeText(activity, "You lost", Toast.LENGTH_SHORT).show()
+        } else if (myLives >= 1 && hasWon) {
+            Toast.makeText(activity, "You Won", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun matchWord(word: String) {
+        hasWon = word.chars().allMatch(Character::isLetter)
+    }
+
+    private fun navToFragment() {
+        if (hasWon) {
+            Navigation.findNavController(requireView()).navigate(R.id.toWinFragment)
+        }
+        if (hasLost) {
+            Navigation.findNavController(requireView()).navigate(R.id.toLostFragment)
+        }
+    }
+
+//    private fun lettersTyped(): ArrayList<String> {
+//        var word = guessedLetter
+//        var list = ArrayList<String>()
+//        list.add(word)
+//        return list
+//    }
+
 
     /**
      * Funktionen kan finde indexes af substring i et string.
