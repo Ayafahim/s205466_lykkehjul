@@ -16,7 +16,6 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.s205466_lykkehjul.adapter.RVAdapter
-import com.example.s205466_lykkehjul.data.WheelValues
 import com.example.s205466_lykkehjul.data.Words
 import kotlin.random.Random
 
@@ -29,7 +28,7 @@ class WordGuessFragment : Fragment() {
     private var lifeCounter: TextView? = null
     private var pointsView: TextView? = null
     private var wheelPoints = " "
-    private var wheel = WheelValues.spinWheel
+    private var wheel =  ArrayList<String>()
     private var countries = Words.countries
     private var guessedLetter = " "
     private val randomIndex = Random.nextInt(countries.size)
