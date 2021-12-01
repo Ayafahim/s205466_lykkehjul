@@ -39,9 +39,6 @@ class WordGuessFragment : Fragment() {
     private val sb = StringBuilder()
     private var hasWon = false
     private var hasLost = false
-    private val bundle = Bundle()
-    private val lostFragment = LostFragment()
-    private val wonFragment = WonFragment()
     var letters = ArrayList<String>()
 
 
@@ -135,7 +132,7 @@ class WordGuessFragment : Fragment() {
     private fun newGame() {
 
         lifeCounter?.text = myLives.toString()
-        pointsView?.text = "Points: 0"
+        pointsView?.text = "$myPoints"
 //        makes underscores for each letter of chosen word
         repeat(randomWord.length) {
             sb.append("_")
@@ -179,16 +176,16 @@ class WordGuessFragment : Fragment() {
             when (letterOccurance) {
                 1 -> {
                     myPoints += wheelPoints.toInt()
-                    pointsView!!.text = "Points: $myPoints"
+                    pointsView!!.text = "$myPoints"
                 }
                 2 -> {
 
                     myPoints += (wheelPoints.toInt() * 2)
-                    pointsView!!.text = "Points: $myPoints"
+                    pointsView!!.text = "$myPoints"
                 }
                 3 -> {
                     myPoints += (wheelPoints.toInt() * 3)
-                    pointsView!!.text = "Points: $myPoints"
+                    pointsView!!.text = "$myPoints"
                 }
 
             }
@@ -210,7 +207,7 @@ class WordGuessFragment : Fragment() {
             }
             "Bankrupt" -> {
                 myPoints = 0
-                pointsView!!.text = "Points: $myPoints"
+                pointsView!!.text = "$myPoints"
                 Toast.makeText(activity, "You lost all your points, spin again", Toast.LENGTH_SHORT).show()
             }
 
@@ -274,9 +271,9 @@ class WordGuessFragment : Fragment() {
         matchWord(gameWordView!!.text.toString())
         if (myLives == 0) {
             hasLost = true
-            Toast.makeText(activity, "You lost", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, "You lost, the word was $randomWord", Toast.LENGTH_SHORT).show()
         } else if (myLives >= 1 && hasWon) {
-            Toast.makeText(activity, "You Won", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, "You Won, the word was $randomWord", Toast.LENGTH_SHORT).show()
         }
         navToFragment()
     }
@@ -288,17 +285,9 @@ class WordGuessFragment : Fragment() {
 
     private fun navToFragment() {
         if (hasWon) {
-//            bundle.putString("data",randomWord)
-//            bundle.putString("points",myPoints.toString())
-//            wonFragment.arguments = bundle
-//            fragmentManager?.beginTransaction()?.replace(R.id.fragmentContainerView2,wonFragment)?.commit()
             Navigation.findNavController(requireView()).navigate(R.id.toWinFragment)
         }
         if (hasLost) {
-//            bundle.putString("randomword",randomWord)
-//            bundle.putString("points",myPoints.toString())
-//            lostFragment.arguments = bundle
-//            fragmentManager?.beginTransaction()?.replace(R.id.fragmentContainerView2,lostFragment)?.commit()
             Navigation.findNavController(requireView()).navigate(R.id.toLostFragment)
         }
     }
