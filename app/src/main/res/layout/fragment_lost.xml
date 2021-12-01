@@ -29,9 +29,7 @@
         android:id="@+id/backToStartBtn"
         android:layout_width="161dp"
         android:layout_height="60dp"
-        android:layout_marginStart="57dp"
         android:layout_marginTop="609dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="62dp"
         android:background="#8FFFFFFF"
         android:text="Back to start"
@@ -40,7 +38,9 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/playAgainBtn"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.936"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.747" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

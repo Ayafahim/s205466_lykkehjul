@@ -29,9 +29,7 @@
         android:id="@+id/textView2"
         android:layout_width="296dp"
         android:layout_height="400dp"
-        android:layout_marginStart="58dp"
         android:layout_marginTop="23dp"
-        android:layout_marginEnd="58dp"
         android:layout_marginBottom="31dp"
         android:background="#8FFFFFFF"
         android:text="About the game:"
@@ -41,7 +39,6 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/startBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -67,13 +64,14 @@
         android:id="@+id/textView4"
         android:layout_width="283dp"
         android:layout_height="63dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="132dp"
         android:text="- Spin the wheel to reveal a prize"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.453"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -104,6 +102,7 @@
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
@@ -121,5 +120,6 @@
         app:layout_constraintBottom_toTopOf="@+id/startBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -27,6 +27,7 @@ class WordGuessFragment : Fragment() {
     private var letterOccurance = 0
     private var lifeCounter: TextView? = null
     private var pointsView: TextView? = null
+    private var usedLetters: TextView? = null
     private var wheelPoints = " "
     private var wheel =  ArrayList<String>()
     private var countries = Words.countries
@@ -62,6 +63,7 @@ class WordGuessFragment : Fragment() {
         lifeCounter = view.findViewById(R.id.lifeCounter)
         pointsView = view.findViewById(R.id.pointsView)
         gameWordView = view.findViewById(R.id.gameWord)
+        usedLetters = view.findViewById(R.id.usedLetters)
 
 
         newGame()
@@ -77,6 +79,7 @@ class WordGuessFragment : Fragment() {
                     checkLetter()
                     isSpinning = false
                     letters.add(guessedLetter) // adds user input to list of used letters
+                    showLettersList()
                     checkGameState()
                 }
             }
@@ -98,6 +101,14 @@ class WordGuessFragment : Fragment() {
         return view
     }
 
+    private fun showLettersList() {
+        var listString = ""
+
+        for (i in letters){
+            listString += "$i, "
+        }
+        usedLetters!!.text = listString
+    }
 
     private fun initializeWheelPoints(): ArrayList<String> {
 //        Spinning wheel
@@ -107,6 +118,13 @@ class WordGuessFragment : Fragment() {
         values.add("500")
         values.add("1600")
         values.add("100")
+        values.add("1000")
+        values.add("1500")
+        values.add("0")
+        values.add("3500")
+        values.add("300")
+        values.add("50")
+        values.add("400")
         values.add("Lost Turn")
         values.add("Bankrupt")
         values.add("Extra Turn")
@@ -166,7 +184,6 @@ class WordGuessFragment : Fragment() {
         }
     }
 
-
     private fun calculatePoints() {
 
         if (wheelPoints == "Bankrupt" || wheelPoints == "Extra Turn" || wheelPoints == "Lost Turn") {
@@ -191,7 +208,6 @@ class WordGuessFragment : Fragment() {
             }
         }
     }
-
 
     private fun specialFields() {
         when (wheelPoints) {
@@ -268,12 +284,13 @@ class WordGuessFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun checkGameState() {
+        var word = randomWord.uppercase()
         matchWord(gameWordView!!.text.toString())
         if (myLives == 0) {
             hasLost = true
-            Toast.makeText(activity, "You lost, the word was $randomWord", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, "You lost, the word was $word", Toast.LENGTH_SHORT).show()
         } else if (myLives >= 1 && hasWon) {
-            Toast.makeText(activity, "You Won, the word was $randomWord", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, "You Won, the word was $word", Toast.LENGTH_SHORT).show()
         }
         navToFragment()
     }
@@ -291,6 +308,8 @@ class WordGuessFragment : Fragment() {
             Navigation.findNavController(requireView()).navigate(R.id.toLostFragment)
         }
     }
+
+
 
 
     /**
