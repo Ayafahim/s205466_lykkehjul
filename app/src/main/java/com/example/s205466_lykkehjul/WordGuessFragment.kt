@@ -54,7 +54,7 @@ class WordGuessFragment : Fragment() {
 
         recyclerView = view?.findViewById(R.id.RV)
         recyclerView?.layoutManager = LinearLayoutManager(context)
-        recyclerView?.adapter = context?.let { RVAdapter(it, wheel) }
+        recyclerView?.adapter = context?.let { RVAdapter(wheel) }
 
 
         val letterInput = view.findViewById<EditText>(R.id.letterInput)

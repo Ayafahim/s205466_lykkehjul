@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.s205466_lykkehjul.R
 
-class RVAdapter(val context: Context, val list: ArrayList<String>) :
+class RVAdapter( val list: ArrayList<String>) :
     RecyclerView.Adapter<RVAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -20,7 +20,6 @@ class RVAdapter(val context: Context, val list: ArrayList<String>) :
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item2_layout, parent, false)
         return ViewHolder(v)
     }
-
 
 
     override fun getItemCount(): Int {
