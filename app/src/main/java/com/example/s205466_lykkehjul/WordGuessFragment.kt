@@ -28,7 +28,7 @@ class WordGuessFragment : Fragment() {
     private var lifeCounter: TextView? = null
     private var pointsView: TextView? = null
     private var usedLetters: TextView? = null
-    private var wheelPoints = " "
+     var wheelPoints = " "
     private var wheel =  ArrayList<String>()
     private var countries = Words.countries
     private var guessedLetter = " "
@@ -36,7 +36,7 @@ class WordGuessFragment : Fragment() {
     private var randomWord = countries[randomIndex]
     private var underScoreWord = " "
     private var gameWordView: TextView? = null
-    private var isSpinning = false
+     var isSpinning = false
     private val sb = StringBuilder()
     private var hasWon = false
     private var hasLost = false
@@ -79,7 +79,7 @@ class WordGuessFragment : Fragment() {
                     checkLetter()
                     isSpinning = false
                     letters.add(guessedLetter) // adds user input to list of used letters
-                    showLettersList()
+                    usedLetters!!.text = showLettersList(letters)
                     checkGameState()
                 }
             }
@@ -101,16 +101,16 @@ class WordGuessFragment : Fragment() {
         return view
     }
 
-    private fun showLettersList() {
+     fun showLettersList(letterList : ArrayList<String>) : String {
         var listString = ""
 
-        for (i in letters){
+        for (i in letterList){
             listString += "$i, "
         }
-        usedLetters!!.text = listString
+         return listString
     }
 
-    private fun initializeWheelPoints(): ArrayList<String> {
+    fun initializeWheelPoints(): ArrayList<String> {
 //        Spinning wheel
         val values = ArrayList<String>()
         values.add("1200")
@@ -131,7 +131,7 @@ class WordGuessFragment : Fragment() {
         return values
     }
 
-    private fun spinWheel() {
+     fun spinWheel() {
         var list = initializeWheelPoints()
         var randomIndex = Random.nextInt(list.size)
         wheelPoints = list[randomIndex]
